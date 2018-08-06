@@ -11,7 +11,7 @@ public class UserDAO extends AbstractDAO<User>{
 
 	@Autowired
 	private SessionFactory sessionFactory;
-	
+
 	public User findUserAccount(Integer id) {
 		return sessionFactory.getCurrentSession().get(User.class, id);
 	}

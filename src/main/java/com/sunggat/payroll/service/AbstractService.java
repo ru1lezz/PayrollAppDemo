@@ -3,33 +3,36 @@ package com.sunggat.payroll.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.User.UserBuilder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.sunggat.payroll.dao.CrudDAO;
 import com.sunggat.payroll.dao.DAOException;
 import com.sunggat.payroll.entity.BaseEntity;
+import com.sunggat.payroll.entity.User;
 
 @Service
-public abstract class AbstractService<T extends BaseEntity> implements CrudService<T>{
+public abstract class AbstractService<T extends BaseEntity> implements CrudService<T> {
 
 	@Autowired
 	public CrudDAO<T> crudDAO;
 	
 	@Override
-    @Transactional
     public T save(T entity) throws ServiceException {
-        T focusEntity = null;
         try {
             if (entity.getId() != 0) {
-                focusEntity = crudDAO.update(entity);
+                crudDAO.update(entity);
             } else {
-                focusEntity = crudDAO.add(entity);
+                crudDAO.add(entity);
             }
         } catch (DAOException ex) {
             throw new ServiceException(ex.getMessage(), ex);
         }
-        return focusEntity;
+        return null;
     }
 
     @Override

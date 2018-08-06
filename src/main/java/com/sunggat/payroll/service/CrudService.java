@@ -5,7 +5,7 @@ import java.util.List;
 import com.sunggat.payroll.entity.BaseEntity;
 
 public interface CrudService<T extends BaseEntity> {
-
+	
 	T save(T entity) throws ServiceException;
 
     void remove(T entity) throws ServiceException;

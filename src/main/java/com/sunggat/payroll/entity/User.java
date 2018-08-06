@@ -63,6 +63,9 @@ public class User extends BaseEntity{
 	@OneToMany(fetch=FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "user")
 	private Set<Authority> authorities = new HashSet<>();
 	
+	@OneToOne(fetch=FetchType.LAZY, cascade={CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH}, mappedBy = "user")
+	private Payroll payroll;
+	
 	@Column(name = "enabled")
 	private boolean enabled;
 	
@@ -157,6 +160,15 @@ public class User extends BaseEntity{
 
 	public void setAuthorities(Set<Authority> authorities) {
 		this.authorities = authorities;
+	}
+	
+
+	public Payroll getPayroll() {
+		return payroll;
+	}
+
+	public void setPayroll(Payroll payroll) {
+		this.payroll = payroll;
 	}
 
 	public boolean isEnabled() {

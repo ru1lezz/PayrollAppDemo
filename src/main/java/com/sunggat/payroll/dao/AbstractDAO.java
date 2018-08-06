@@ -3,6 +3,7 @@ package com.sunggat.payroll.dao;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
@@ -15,7 +16,7 @@ import org.springframework.stereotype.Repository;
 import com.sunggat.payroll.entity.BaseEntity;
 
 @Repository
-public abstract class AbstractDAO <T extends BaseEntity> implements CrudDAO<T>{
+public abstract class AbstractDAO <T extends BaseEntity> implements CrudDAO<T> {
 	
 	@Autowired
 	private SessionFactory sessionFactory;
@@ -29,20 +30,27 @@ public abstract class AbstractDAO <T extends BaseEntity> implements CrudDAO<T>{
 	
 	 @Override
 	    public T add(T entity) throws DAOException {
-	        T value = null;
 	        try {
-	            value = sessionFactory.createEntityManager().merge(entity);
+	        	EntityManager em = sessionFactory.createEntityManager();
+	        	EntityTransaction t = em.getTransaction();
+	        	t.begin();
+	        	em.merge(entity);
+	        	t.commit();
 	        } catch (Exception e) {
 	            throw new DAOException("exception in DAO add", e);
-	        }
-	        return value;
 	    }
+	        return null;
+	 }
 
 	    @Override
 	    public T update(T entity) throws DAOException {
 	        T value = null;
 	        try {
-	            value = sessionFactory.createEntityManager().merge(entity);
+	        	EntityManager em = sessionFactory.createEntityManager();
+	        	EntityTransaction t = em.getTransaction();
+	        	t.begin();
+	        	value = em.merge(entity);
+	        	t.commit();
 	        } catch (Exception e) {
 	            throw new DAOException("exception in DAO update", e);
 	        }
@@ -52,7 +60,11 @@ public abstract class AbstractDAO <T extends BaseEntity> implements CrudDAO<T>{
 	    @Override
 	    public void delete(T entity) throws DAOException {
 	        try {
-	            sessionFactory.createEntityManager().remove(sessionFactory.createEntityManager().contains(entity) ? entity : sessionFactory.createEntityManager().merge(entity));
+	        	EntityManager em = sessionFactory.createEntityManager();
+	        	EntityTransaction t = em.getTransaction();
+	        	t.begin();
+	        	em.remove(entity);
+	        	t.commit();
 	        } catch (Exception e) {
 	            throw new DAOException("exception in DAO delete", e);
 	        }
@@ -76,7 +88,8 @@ public abstract class AbstractDAO <T extends BaseEntity> implements CrudDAO<T>{
         CriteriaQuery<T> select = cb.createQuery(entityType);
         Root<T> e = select.from(entityType);
         value = sessionFactory.createEntityManager().createQuery(select.select(e)).getResultList();
-        System.out.println(value.toString());
         return value;
     }
+	
+	
 }

@@ -1,3 +1,4 @@
+
 package com.sunggat.payroll.service;
 
 import javax.transaction.Transactional;
@@ -37,7 +38,6 @@ public class UserDetailsServiceImpl implements UserDetailsService{
 		
 		return builder.build();
 	}
-	
 	
 	
 }

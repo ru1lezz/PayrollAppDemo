@@ -24,7 +24,7 @@ public class UserDetails extends BaseEntity {
 	public String position;
 	
 	@Column(name="experience")
-	public int experience;
+	public String experience;
 	
 	@OneToOne(fetch=FetchType.LAZY, mappedBy="userDetail", cascade=CascadeType.ALL)
 	private User user;
@@ -41,13 +41,13 @@ public class UserDetails extends BaseEntity {
 		
 	}
 
-	public UserDetails(Date joinDate, String position, int experience) {
+	public UserDetails(Date joinDate, String position, String experience) {
 		this.joinDate = joinDate;
 		this.position = position;
 		this.experience = experience;
 	}
 
-	public UserDetails(Date joinDate, String position, int experience, User user, Job job, Department department) {
+	public UserDetails(Date joinDate, String position, String experience, User user, Job job, Department department) {
 		super();
 		this.joinDate = joinDate;
 		this.position = position;
@@ -73,11 +73,11 @@ public class UserDetails extends BaseEntity {
 		this.position = position;
 	}
 
-	public int getExperience() {
+	public String getExperience() {
 		return experience;
 	}
 
-	public void setExperience(int experience) {
+	public void setExperience(String experience) {
 		this.experience = experience;
 	}
 

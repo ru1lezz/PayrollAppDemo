@@ -1,4 +1,4 @@
-
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
     
@@ -32,18 +32,17 @@
 	          <a class="navbar-brand" href="#">Payroll System</a>
 	        </div>
 	        <div id="navbar" class="collapse navbar-collapse">
+	          <spring:url value="/" var="mainUrl"/>
 	          <ul class="nav navbar-nav">
-	          <li><a href="#">Benefits</a></li>
-	            <li><a href="#">Departments</a></li>
-	            <li><a href="#">Payroll</a></li>
-	            <li><a href="#">Performance</a></li>
-	            <li class="active"><a href="users.html">Users</a></li>
+		          <li><a href="${mainUrl}">Main</a></li>
 	          </ul>
 	          <ul class="nav navbar-nav navbar-right">
-	            <li><a href="#">Welcome, user</a></li>
-	            <li><a href="login.html">Logout</a></li>
+	            <form:form action="${pageContext.request.contextPath}/logout" 
+						  method="POST" class="form-horizontal">
+					<input type="submit" class="btn btn-primary" value="Logout"/>
+				</form:form>
 	          </ul>
-	        </div><!--/.nav-collapse -->
+	        </div>
 	      </div>
 	    </nav>
 	
@@ -51,7 +50,7 @@
 	      <div class="container">
 	        <div class="row">
 	          <div class="col-md-10">
-	            <h1><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> Users</h1>
+	            <h1><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> Jobs</h1>
 	          </div>
 	        </div>
 	      </div>
@@ -60,8 +59,8 @@
 	    <section id="breadcrumb">
 	      <div class="container">
 	        <ol class="breadcrumb">
-	          <li><a href="index.html">Dashboard</a></li>
-	          <li class="active">Users</li>
+	          <li><a href="#">Dashboard</a></li>
+	          <li class="active">Jobs</li>
 	        </ol>
 	      </div>
 	    </section>
@@ -71,12 +70,23 @@
 	        <div class="row">
 	          <div class="col-md-3">
 	            <div class="list-group">
-	              <a href="index.html" class="list-group-item active main-color-bg">
+	              <a href="#" class="list-group-item active main-color-bg">
 	                <span class="glyphicon glyphicon-cog" aria-hidden="true"></span> Dashboard
 	              </a>
-	              <a href="pages.html" class="list-group-item"><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span> Departments </a>
-	              <a href="posts.html" class="list-group-item"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> Payroll </a>
-	              <a href="users.html" class="list-group-item"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> Users </a>
+	           <spring:url value="/user/showUserProfile" var="userProfileUrl"/>
+	               <spring:url value="/user/list" var="userListUrl"/>
+	               <spring:url value="/benefit/list" var="benefitListUrl"/>
+	               <spring:url value="/department/list" var="departmentListUrl"/>
+	               <spring:url value="/job/list" var="jobListUrl"/>
+	               <spring:url value="/payroll/list" var="payrollListUrl"/>
+	               <spring:url value="/performance/list" var="performanceListUrl"/>
+	               <a href="${userProfileUrl}" class="list-group-item"><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span> Your Profile</a>
+	               <a href="${userListUrl}" class="list-group-item"><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span> Users</a>
+	               <a href="${benefitListUrl}" class="list-group-item"><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span> Benefits </a>
+	               <a href="${departmentListUrl}" class="list-group-item"><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span> Departments</a>
+	               <a href="${jobListUrl}" class="list-group-item"><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span> Jobs</a>
+	               <a href="${payrollListUrl}" class="list-group-item"><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span> Payroll </a>
+	               <a href="${performanceListUrl}" class="list-group-item"><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span> Performance</a>
 	            </div>
 
 	          </div>
@@ -93,7 +103,7 @@
 	                      </div>
 	                </div>
 	                <br>
-	                <input type="button" value="Add Job" onclick="window.location.href='showAddForm'; return false;">
+	                <input type="button" class="btn btn-success" value="Add Job" onclick="window.location.href='showAddForm'; return false;">
 	                <table class="table table-striped table-hover">
 	                      <tr>
 	                        <th>Job Title</th>
@@ -107,7 +117,7 @@
 								<td> ${tempJob.title} </td>
 								
 								<td>
-									<a href="${updateLink}">Update</td></a>
+									<a href="${updateLink}">Update</a>
 								</td>
 							</tr>
 						</c:forEach>

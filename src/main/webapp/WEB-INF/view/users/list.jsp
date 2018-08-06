@@ -1,4 +1,4 @@
-
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
     
@@ -15,8 +15,6 @@
 <!-- Optional theme -->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
 
-<!-- Latest compiled and minified JavaScript -->
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 
 </head>
 <body>
@@ -32,18 +30,17 @@
 	          <a class="navbar-brand" href="#">Payroll System</a>
 	        </div>
 	        <div id="navbar" class="collapse navbar-collapse">
+	          <spring:url value="/" var="mainUrl"/>
 	          <ul class="nav navbar-nav">
-	          <li><a href="#">Benefits</a></li>
-	            <li><a href="#">Departments</a></li>
-	            <li><a href="#">Payroll</a></li>
-	            <li><a href="#">Performance</a></li>
-	            <li class="active"><a href="users.html">Users</a></li>
+		          <li><a href="${mainUrl}">Main</a></li>
 	          </ul>
 	          <ul class="nav navbar-nav navbar-right">
-	            <li><a href="#">Welcome, user</a></li>
-	            <li><a href="login.html">Logout</a></li>
+	            <form:form action="${pageContext.request.contextPath}/logout" 
+						  method="POST" class="form-horizontal">
+					<input type="submit" class="btn btn-primary" value="Logout"/>
+				</form:form>
 	          </ul>
-	        </div><!--/.nav-collapse -->
+	        </div>
 	      </div>
 	    </nav>
 	
@@ -74,9 +71,21 @@
 	              <a href="index.html" class="list-group-item active main-color-bg">
 	                <span class="glyphicon glyphicon-cog" aria-hidden="true"></span> Dashboard
 	              </a>
-	              <a href="pages.html" class="list-group-item"><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span> Departments </a>
-	              <a href="posts.html" class="list-group-item"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> Payroll </a>
-	              <a href="users.html" class="list-group-item"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> Users </a>
+	              <spring:url value="/user/showUserProfile" var="userProfileUrl"/>
+	               <spring:url value="/user/list" var="userListUrl"/>
+	               <spring:url value="/userDetails/list" var="userDetailsListUrl"/>
+	               <spring:url value="/benefit/list" var="benefitListUrl"/>
+	               <spring:url value="/department/list" var="departmentListUrl"/>
+	               <spring:url value="/job/list" var="jobListUrl"/>
+	               <spring:url value="/payroll/list" var="payrollListUrl"/>
+	               <spring:url value="/performance/list" var="performanceListUrl"/>
+	               <a href="${userProfileUrl}" class="list-group-item"><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span> Your Profile</a>
+	               <a href="${userListUrl}" class="list-group-item"><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span> Users</a>
+	               <a href="${benefitListUrl}" class="list-group-item"><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span> Benefits </a>
+	               <a href="${departmentListUrl}" class="list-group-item"><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span> Departments</a>
+	               <a href="${jobListUrl}" class="list-group-item"><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span> Jobs</a>
+	               <a href="${payrollListUrl}" class="list-group-item"><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span> Payroll </a>
+	               <a href="${performanceListUrl}" class="list-group-item"><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span> Performance</a>
 	            </div>
 
 	          </div>
@@ -93,26 +102,61 @@
 	                      </div>
 	                </div>
 	                <br>
-	                <input type="button" value="Add User" onclick="window.location.href='showAddForm'; return false;">
+	                <input type="button" class="btn btn-success" value="Add User" onclick="window.location.href='showAddForm'; return false;">
+	                <a href="${userDetailsListUrl}" class="btn btn-success"> Show All User Details</a>
+	                <br>
 	                <table class="table table-striped table-hover">
 	                      <tr>
+	                        <th>ID</th>
 	                        <th>First Name</th>
 	                        <th>Last Name</th>
+	                        <th>Date of Birth</th>
+	                        <th>Gender</th>
+	                        <th>Password</th>
 	                        <th>Action</th>
 	                      </tr>
 	                      <c:forEach var="tempUser" items="${users}">
-	                      <c:url var="updateLink" value="/user/showUpdateForm">
-	                      	<c:param name="id" value="${tempUser.id}"/>
-	                      </c:url>
-							<tr>
-								<td> ${tempUser.firstName} </td>
-								<td> ${tempUser.lastName} </td>
-								
-								<td>
-									<a href="${updateLink}">Update</td></a>
-								</td>
-							</tr>
-						</c:forEach>
+	                      	  <c:url var="addLink" value="/userDetails/showAddForm">
+		                      	<c:param name="id" value="${tempUser.id}"/>
+		                      </c:url>
+		                      <c:url var="userDetailsLink" value="/userDetails/showUserDetails">
+		                      	<c:param name="id" value="${tempUser.id}"/>
+		                      </c:url>
+		                      <c:url var="updateLink" value="/user/showUpdateForm">
+		                      	<c:param name="id" value="${tempUser.id}"/>
+		                      </c:url>
+		                       <c:url var="userBenefitsLink" value="/user/listUserBenefits">
+		                      	<c:param name="id" value="${tempUser.id}"/>
+		                      </c:url>
+		                       <c:url var="userPerformancesLink" value="/user/listUserPerformances">
+		                      	<c:param name="id" value="${tempUser.id}"/>
+		                      </c:url>
+								<tr>
+									<td> ${tempUser.id} </td>
+									<td> ${tempUser.firstName} </td>
+									<td> ${tempUser.lastName} </td>
+									<td> ${tempUser.dateOfBirth} </td>
+									<td> ${tempUser.gender} </td>
+									<td> ${tempUser.password} </td>
+									<td>
+										<c:if test="${not empty tempUser.userDetail.id}">
+				                            <a href="${userDetailsLink}">More Details</a>
+				                        </c:if>		
+										<c:if test="${empty tempUser.userDetail.id}">
+				                            <a href="${addLink}">Add User Details</a>
+				                        </c:if>		
+									</td>
+									<td> 
+										<a href="${userBenefitsLink}">Benefits</a>
+									</td>
+									<td> 
+										<a href="${userPerformancesLink}">Performances</a>
+									</td>
+									<td>
+										<a href="${updateLink}">Update</a>
+									</td>
+								</tr>
+							</c:forEach>
 	                    </table>
 	              </div>
 	              </div>
@@ -136,5 +180,7 @@
 	    ================================================== -->
 	    <!-- Placed at the end of the document so the pages load faster -->
 	    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+	    <!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
   </body>
 </html>

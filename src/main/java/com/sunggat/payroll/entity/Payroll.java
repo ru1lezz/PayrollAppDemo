@@ -1,5 +1,7 @@
 package com.sunggat.payroll.entity;
 
+import java.math.BigDecimal;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -12,10 +14,10 @@ import javax.persistence.Table;
 public class Payroll extends BaseEntity {
 
 	@Column(name="annual_salary")
-	public Integer annualSalary;
+	public BigDecimal annualSalary;
 	
 	@Column(name="final_salary")
-	public Integer finalSalary;
+	public BigDecimal finalSalary;
 	
 	@Column(name="currency")
 	public String currency;
@@ -28,26 +30,26 @@ public class Payroll extends BaseEntity {
 		
 	}
 
-	public Payroll(Integer annualSalary, Integer finalSalary, String currency, User user) {
+	public Payroll(BigDecimal annualSalary, BigDecimal finalSalary, String currency, User user) {
 		this.annualSalary = annualSalary;
 		this.finalSalary = finalSalary;
 		this.currency = currency;
 		this.user = user;
 	}
 
-	public Integer getAnnualSalary() {
+	public BigDecimal getAnnualSalary() {
 		return annualSalary;
 	}
 
-	public void setAnnualSalary(Integer annualSalary) {
+	public void setAnnualSalary(BigDecimal annualSalary) {
 		this.annualSalary = annualSalary;
 	}
 
-	public Integer getFinalSalary() {
+	public BigDecimal getFinalSalary() {
 		return finalSalary;
 	}
 
-	public void setFinalSalary(Integer finalSalary) {
+	public void setFinalSalary(BigDecimal finalSalary) {
 		this.finalSalary = finalSalary;
 	}
 
